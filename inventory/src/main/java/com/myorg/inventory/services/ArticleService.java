@@ -8,6 +8,7 @@ import com.myorg.inventory.repositories.ArticleDBViewRepository;
 import com.myorg.inventory.models.ArticleRelationship;
 import com.myorg.inventory.repositories.ArticleRelationshipRepository;
 import com.myorg.inventory.repositories.ArticleRepository;
+import com.myorg.inventory.util.ApplicationProperties;
 import com.myorg.inventory.util.PublishNotifications;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,9 @@ import java.util.Map;
 @Transactional
 public class ArticleService implements ArticleServiceInterface{
     private static final Logger logger = LogManager.getLogger(ArticleService.class);
+
+    @Autowired
+    ApplicationProperties applicationProperties;
 
     @Autowired
     private ArticleRepository repository;
@@ -55,13 +59,9 @@ public class ArticleService implements ArticleServiceInterface{
 
     }
 
-    @Override
-    public List<ArticleDBView> listAllFromView(Map<String, String> qparams) {
-        return dbViewRepository.findAll();
-    }
 
     @Override
-    public void save(List<ArticleBean> articleBeanList) {
+    public List<Article> save(List<ArticleBean> articleBeanList) {
         logger.debug("Inside ArticleService save(articleBeanList)--> is input list null ? "+ CollectionUtils.isEmpty(articleBeanList));
         List<Article> articleList = new ArrayList<>();
         Article article;
@@ -76,18 +76,12 @@ public class ArticleService implements ArticleServiceInterface{
             article.setStock(articleBean.getStock());
             article.setPrice(articleBean.getPrice());
             article.setSellable(articleBean.isSellable());
-            article.setArtType("Item");
+            article.setArtType(applicationProperties.getArtTypeItem());
 
             articleList.add(article);
         }
-        repository.saveAll(articleList);
+        return repository.saveAll(articleList);
 
-    }
-
-    @Transactional
-    @Override
-    public Article saveAndFlush(Article article) {
-        return repository.saveAndFlush(article);
     }
 
     @Override
@@ -125,7 +119,7 @@ public class ArticleService implements ArticleServiceInterface{
                 childArticleToUpdate.setStock(childArticleToUpdate.getStock()-countToSubtract);
                 logger.debug("Child Article value updated for articlenumber - "+relationship.getChildArtNumber()+" to "+(childArticleToUpdate.getStock()));
 
-                saveAndFlush(childArticleToUpdate);//the stock quantity of Child article must be updated in DB for next Child article's stock update
+                repository.saveAndFlush(childArticleToUpdate);//the stock quantity of Child article must be updated in DB for next Child article's stock update
             }
 
         }

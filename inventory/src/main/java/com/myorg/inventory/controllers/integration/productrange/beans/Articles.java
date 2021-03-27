@@ -16,4 +16,6 @@ public class Articles {
         this.inventory = inventory;
     }
 
+    public Articles() {
+    }
 }

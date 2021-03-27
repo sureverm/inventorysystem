@@ -22,6 +22,20 @@ public class ArticleBean {
         return art_id;
     }
 
+    public ArticleBean() {
+    }
+
+    public ArticleBean(String art_id, String artType, String name, Integer stock, Long price, boolean sellable, String artNumber, List<ArticleRelationship> listArticleRelationships) {
+        this.art_id = art_id;
+        this.artType = artType;
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+        this.sellable = sellable;
+        this.artNumber = artNumber;
+        this.listArticleRelationships = listArticleRelationships;
+    }
+
     public void setArt_id(String art_id) {
         this.art_id = art_id;
     }

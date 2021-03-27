@@ -17,6 +17,12 @@ public class ApplicationProperties {
     @Value("${integ.productrangeapp.products.url}")
     private String productRangeAppProductsUrl;
 
+    @Value("inventory.article.articleType.item")
+    private String artTypeItem;
+
+    @Value("inventory.article.articleType.product")
+    private String artTypeProduct;
+
     public String getProductRangeAppInventoryUrl() {
         return productRangeAppInventoryUrl;
     }
@@ -31,5 +37,21 @@ public class ApplicationProperties {
 
     public void setProductRangeAppProductsUrl(String productRangeAppProductsUrl) {
         this.productRangeAppProductsUrl = productRangeAppProductsUrl;
+    }
+
+    public String getArtTypeItem() {
+        return artTypeItem;
+    }
+
+    public void setArtTypeItem(String artTypeItem) {
+        this.artTypeItem = artTypeItem;
+    }
+
+    public String getArtTypeProduct() {
+        return artTypeProduct;
+    }
+
+    public void setArtTypeProduct(String artTypeProduct) {
+        this.artTypeProduct = artTypeProduct;
     }
 }

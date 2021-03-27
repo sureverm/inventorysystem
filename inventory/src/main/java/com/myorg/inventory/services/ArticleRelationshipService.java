@@ -6,6 +6,7 @@ import com.myorg.inventory.models.Article;
 import com.myorg.inventory.models.ArticleRelationship;
 import com.myorg.inventory.repositories.ArticleRelationshipRepository;
 import com.myorg.inventory.repositories.ArticleRepository;
+import com.myorg.inventory.util.ApplicationProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.util.List;
 public class ArticleRelationshipService implements ArticleRelationshipServiceInterface{
 
     private static final Logger logger = LogManager.getLogger(ArticleRelationshipService.class);
+
+    @Autowired
+    ApplicationProperties applicationProperties;
 
     @Autowired
     private ArticleRelationshipRepository relationshipRepository;
@@ -54,7 +58,8 @@ public class ArticleRelationshipService implements ArticleRelationshipServiceInt
             article.setName(productBean.getName());
             article.setSellable(productBean.isSellable());
             article.setPrice(productPrice);
-            article.setArtType("Product");
+            article.setStock(0);
+            article.setArtType(applicationProperties.getArtTypeProduct());
 
             article = articleRepository.saveAndFlush(article);
             articleList.add(article);

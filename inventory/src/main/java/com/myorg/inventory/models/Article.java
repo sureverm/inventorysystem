@@ -35,12 +35,23 @@ public class Article implements Serializable {
 
     }
 
+    public Article(String artNumber, String artType, String name, Integer stock, Long price, boolean sellable, List<ArticleRelationship> articleRelationship) {
+        this.artNumber = artNumber;
+        this.artType = artType;
+        this.name = name;
+        this.stock = stock;
+        this.price = price;
+        this.sellable = sellable;
+        this.listArticleRelationships=articleRelationship;
+    }
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "art_parent_id",
             referencedColumnName = "art_id"
     )
     private List<ArticleRelationship> listArticleRelationships = new ArrayList<>();
+
 
     public Integer getArtId() {
         return artId;

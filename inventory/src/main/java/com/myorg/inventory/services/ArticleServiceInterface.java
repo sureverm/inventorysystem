@@ -17,11 +17,7 @@ public interface ArticleServiceInterface {
 
     List<Article> listAll(Map<String,String> qparams);
 
-    List<ArticleDBView> listAllFromView(Map<String,String> qparams);
-
-    void save(List<ArticleBean> articleList);
-
-    Article saveAndFlush(Article article);
+    List<Article> save(List<ArticleBean> articleList);
 
     Article getArticle(String art_id);
 
