@@ -1,0 +1,85 @@
+{
+  "inventory":
+    {
+    "inventory": [
+      {
+        "artNumber": "1",
+        "name": "leg",
+        "stock": "12",
+        "price": "100",
+        "sellable": "false"
+      },
+      {
+        "artNumber": "2",
+        "name": "screw",
+        "stock": "17",
+        "price": "10",
+        "sellable": "false"
+      },
+      {
+        "artNumber": "3",
+        "name": "seat",
+        "stock": "2",
+        "price": "250",
+        "sellable": "false"
+      },
+      {
+        "artNumber": "4",
+        "name": "table top",
+        "stock": "1",
+        "price": "300",
+        "sellable": "false"
+      }
+    ]
+  },
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "products": {
+    "products": [
+      {
+        "name": "Dining Chair",
+        "product_id": "11",
+        "sellable": "true",
+        "contain_articles": [
+          {
+            "artNumber": "1",
+            "amount_of": "4"
+          },
+          {
+            "artNumber": "2",
+            "amount_of": "8"
+          },
+          {
+            "artNumber": "3",
+            "amount_of": "1"
+          }
+        ]
+      },
+      {
+        "name": "Dinning Table",
+        "product_id": "12",
+        "sellable": "true",
+        "contain_articles": [
+          {
+            "artNumber": "1",
+            "amount_of": "4"
+          },
+          {
+            "artNumber": "2",
+            "amount_of": "8"
+          },
+          {
+            "artNumber": "4",
+            "amount_of": "1"
+          }
+        ]
+      }
+    ]
+  }
+
+}

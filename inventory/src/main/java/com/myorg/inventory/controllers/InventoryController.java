@@ -25,7 +25,7 @@ public class InventoryController {
         return articleService.listAll(qparams);
     }
 
-    @PutMapping
+    @PostMapping
     @RequestMapping("/products/updateStock")
     public ResponseEntity<InventoryResponse> updateArticleStock(@RequestBody Articles articles) {
         InventoryResponse responseObj =  articleService.updateArticleStock(articles);
