@@ -1,13 +1,12 @@
 package com.myorg.inventory.services;
 
+import com.google.common.base.Strings;
+import com.myorg.inventory.controllers.beans.SoldProducts;
+import com.myorg.inventory.controllers.beans.SoldProductsOrderDetails;
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
-import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
 import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
 import com.myorg.inventory.models.Article;
-import com.myorg.inventory.models.ArticleDBView;
-import com.myorg.inventory.repositories.ArticleDBViewRepository;
 import com.myorg.inventory.models.ArticleRelationship;
-import com.myorg.inventory.repositories.ArticleRelationshipRepository;
 import com.myorg.inventory.repositories.ArticleRepository;
 import com.myorg.inventory.util.ApplicationProperties;
 import com.myorg.inventory.util.PublishNotifications;
@@ -18,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -33,12 +29,6 @@ public class ArticleService implements ArticleServiceInterface{
 
     @Autowired
     private ArticleRepository repository;
-
-    @Autowired
-    private ArticleDBViewRepository dbViewRepository;
-
-    @Autowired
-    private ArticleRelationshipRepository relationshipRepository;
 
     @Override
     public List<Article> listAll(Map<String,String> qparams) {
@@ -72,6 +62,12 @@ public class ArticleService implements ArticleServiceInterface{
             if(null == article)
                 article = new Article();
 
+            if(Strings.isNullOrEmpty(articleBean.getArtNumber()) || Strings.isNullOrEmpty(articleBean.getName())){
+                //other business specific validations which refrains the Article from being saved in DB
+                // TODO place holder to send necessary notification to the concerned Team/Service
+                continue;
+            }
+
             article.setArtNumber(articleBean.getArtNumber());
             article.setName(articleBean.getName());
             article.setStock(articleBean.getStock());
@@ -91,42 +87,45 @@ public class ArticleService implements ArticleServiceInterface{
     }
 
     @Override
-    public InventoryResponse updateArticleStock(Articles articles) {
-        logger.debug("Inside ArticleService updateArticleStock(articles)--> is input list null ? "+ CollectionUtils.isEmpty(articles.getInventory()));
-        List<Article> articleList = new ArrayList<>();
+    public InventoryResponse updateArticleStock(SoldProductsOrderDetails soldProductsOrderDetails) {
+        logger.debug("Inside ArticleService updateArticleStock(soldProductsOrderDetails)--> is input list null ? "+ CollectionUtils.isEmpty(soldProductsOrderDetails.getSoldProduclsList()));
+
+        //TODO if we consider multiple orders will be send in a single payload for stock update then, validations needs to be placed here
+        //The consideration here is one order's sold product's details are being sent as payload
+
         Article parentArticleFromDB, childArticleToUpdate;
         Integer countToSubtract;
         InventoryResponse returnObject = new InventoryResponse();
 
-        for (ArticleBean parentArticleSold : articles.getInventory())  {
+        for (SoldProducts parentArticleSold : soldProductsOrderDetails.getSoldProduclsList())  {
 
             parentArticleFromDB = repository.findByArtNumber(parentArticleSold.getArtNumber());
 
             if(null == parentArticleFromDB)
                 throw new InputMismatchException("SoldProduct's article number "+ parentArticleSold.getArtNumber() +" not found in the inventory");
 
-            for(ArticleRelationship relationship : parentArticleSold.getListArticleRelationships()){
+            for(ArticleRelationship relationship : parentArticleFromDB.getListArticleRelationships()){
 
-                childArticleToUpdate = repository.findByArtNumber(relationship.getChildArtNumber());
+                childArticleToUpdate = repository.findByArtNumber(relationship.getChildArticle().getArtNumber());
                 if(null == childArticleToUpdate)
-                    throw new InputMismatchException("SoldProduct's Child article number "+ relationship.getChildArtNumber() +" not found in the inventory");
+                    throw new InputMismatchException("SoldProduct's Child article number "+ relationship.getChildArticle().getArtNumber() +" not found in the inventory");
 
                 countToSubtract = Integer.valueOf(parentArticleSold.getQuantitySold()) * Integer.valueOf(relationship.getQuantity());
 
                 if(countToSubtract > childArticleToUpdate.getStock()) {
                     PublishNotifications.sendNotificationToDownstreams("SystemXX","Stock status not enough to fulfill item xxx from orderId xxx");//placeholder
                     throw new IllegalStateException("Contact System Administrator!! For SoldProduct's article number " + parentArticleSold.getArtNumber() + " -- " +
-                            "and Child article number " + relationship.getChildArtNumber() + " - stock status not enough");
+                            "and Child article number " + relationship.getChildArticle().getArtNumber() + " - stock status not enough");
                 }
                 childArticleToUpdate.setStock(childArticleToUpdate.getStock()-countToSubtract);
-                logger.debug("Child Article value updated for articlenumber - "+relationship.getChildArtNumber()+" to "+(childArticleToUpdate.getStock()));
+                logger.debug("Child Article value updated for articlenumber - "+relationship.getChildArticle().getArtNumber()+" to "+(childArticleToUpdate.getStock()));
 
                 repository.saveAndFlush(childArticleToUpdate);//the stock quantity of Child article must be updated in DB for next Child article's stock update
             }
 
         }
-        returnObject.setOrderId(articles.getOrderId());
-        returnObject.setOrderNumber(articles.getOrderNumber());
+        returnObject.setOrderId(soldProductsOrderDetails.getOrderId());
+        returnObject.setOrderNumber(soldProductsOrderDetails.getOrderNumber());
         returnObject.setStatusMessage("Stock Updated successfully.");
         return returnObject;
     }

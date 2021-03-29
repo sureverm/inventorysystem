@@ -1,5 +1,6 @@
 package com.myorg.inventory.services;
 
+import com.myorg.inventory.controllers.beans.SoldProductsOrderDetails;
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
 import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
@@ -22,5 +23,5 @@ public interface ArticleServiceInterface {
 
     Article getArticle(String art_id);
 
-    InventoryResponse updateArticleStock(Articles articles);
+    InventoryResponse updateArticleStock(SoldProductsOrderDetails soldProductsOrderDetails);
 }

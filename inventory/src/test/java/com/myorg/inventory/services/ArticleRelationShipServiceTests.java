@@ -58,7 +58,7 @@ public class ArticleRelationShipServiceTests {
         List<ArticleBean> articleBeanList = new ArrayList<>();
         articleRelationship = new ArticleRelationship(1,2,articleChild,articleProduct);
         relationshipList.add(articleRelationship);
-        ArticleBean articleBean = new ArticleBean("1","Item","Table",16, 280L,true, "1", relationshipList);
+        ArticleBean articleBean = new ArticleBean("1","Item","Table",16, 280L,true, relationshipList);
         articleBean.setAmount_of(2);
         articleBeanList.add(articleBean);
 

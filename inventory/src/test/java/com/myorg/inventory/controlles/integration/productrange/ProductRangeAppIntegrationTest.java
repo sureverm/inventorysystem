@@ -70,7 +70,7 @@ public class ProductRangeAppIntegrationTest {
         productBeanList.add(productTwo);
 
         List<ArticleBean> articleBeanList = new ArrayList<>();
-        ArticleBean articleBean = new ArticleBean("","Item","Table",16, 280L,true, "1", relationshipList);
+        ArticleBean articleBean = new ArticleBean("","Item","Table",16, 280L,true, relationshipList);
         articleBeanList.add(articleBean);
         this.products = new Products();
         products.setProducts(productBeanList);

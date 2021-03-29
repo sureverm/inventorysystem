@@ -1,5 +1,6 @@
 package com.myorg.inventory.services;
 
+import com.google.common.base.Strings;
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.ProductBean;
 import com.myorg.inventory.models.Article;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -48,6 +50,13 @@ public class ArticleRelationshipService implements ArticleRelationshipServiceInt
         Article childArticle;
         Long productPrice = null;
         for (ProductBean productBean : productsList)  {
+
+            if(Strings.isNullOrEmpty(productBean.getProduct_id()) || Strings.isNullOrEmpty(productBean.getName())){
+                //other business specific validations which refrains the Product's from being saved in DB
+                //TODO place holder to send necessary notification to the concerned Team/Service
+                continue;
+            }
+
             productPrice = Long.valueOf(0);
             article = articleRepository.findByArtNumber(productBean.getProduct_id());
 
@@ -65,11 +74,14 @@ public class ArticleRelationshipService implements ArticleRelationshipServiceInt
             articleList.add(article);
 
             for(ArticleBean articleBean : productBean.getContain_articles()){
-                childArticle = articleRepository.findByArtNumber(articleBean.getArt_id());
+                childArticle = articleRepository.findByArtNumber(articleBean.getArtNumber());
 
                 if(null == childArticle) {
-                    logger.error("No child inventory/article for product: " + productBean.getProduct_id());
-                    throw new RuntimeException("No child inventory/article for product: " + productBean.getProduct_id());
+                    logger.error("No child inventory/article "+articleBean.getArtNumber()+" found for product: " + productBean.getProduct_id());
+                    //throw new RuntimeException("No child "+articleBean.getArtNumber()+" found inventory/article for product: " + productBean.getProduct_id());
+                    //TODO place holder to send necessary notification to the concerned Team/Service
+                    continue;
+
                 }
 
                 articleRelationship = relationshipRepository.findByChildArticle_ArtIdAndParentArticle_ArtId(childArticle.getArtId(),article.getArtId());

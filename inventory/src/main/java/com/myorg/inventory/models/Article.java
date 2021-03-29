@@ -27,9 +27,6 @@ public class Article implements Serializable {
     @Column(name="sellable")
     private boolean sellable;
 
-    @Transient
-    private Integer quantitySold;
-
 
     public Article(){
 
@@ -115,13 +112,5 @@ public class Article implements Serializable {
 
     public void setListArticleRelationships(List<ArticleRelationship> listArticleRelationships) {
         this.listArticleRelationships = listArticleRelationships;
-    }
-
-    public Integer getQuantitySold() {
-        return quantitySold;
-    }
-
-    public void setQuantitySold(Integer quantitySold) {
-        this.quantitySold = quantitySold;
     }
 }

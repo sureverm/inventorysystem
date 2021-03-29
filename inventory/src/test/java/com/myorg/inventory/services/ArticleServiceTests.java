@@ -1,5 +1,7 @@
 package com.myorg.inventory.services;
 
+import com.myorg.inventory.controllers.beans.SoldProducts;
+import com.myorg.inventory.controllers.beans.SoldProductsOrderDetails;
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
 import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
@@ -44,6 +46,7 @@ public class ArticleServiceTests {
     ArgumentCaptor<String> methodCaptor;
 
     private List<Article> articleList;
+    private SoldProductsOrderDetails soldProductsOrderDetails;
     private Articles articles;
 
     @BeforeEach
@@ -63,8 +66,14 @@ public class ArticleServiceTests {
         articleList.add(articleThree);
 
 
+        List<SoldProducts> soldProductsList = new ArrayList<>();
+        SoldProducts soldProduct = new SoldProducts(1,"11");
+        soldProductsList.add(soldProduct);
+        this.soldProductsOrderDetails = new SoldProductsOrderDetails();
+        soldProductsOrderDetails.setSoldProduclsList(soldProductsList);
+
         List<ArticleBean> articleBeanList = new ArrayList<>();
-        ArticleBean articleBean = new ArticleBean("","Item","Table",16, 280L,true, "11", relationshipList);
+        ArticleBean articleBean = new ArticleBean("11","Item","Table",16, 280L,true, relationshipList);
         articleBeanList.add(articleBean);
         this.articles = new Articles();
         articles.setInventory(articleBeanList);
@@ -86,7 +95,7 @@ public class ArticleServiceTests {
     {
         Mockito.when(articleRepository.findByArtNumber("11")).thenReturn(articleList.get(0));
 
-        InventoryResponse result = articleService.updateArticleStock(articles);
+        InventoryResponse result = articleService.updateArticleStock(soldProductsOrderDetails);
 
         Assertions.assertEquals(true, result.getStatusMessage().toLowerCase().contains("success"));
 
@@ -96,7 +105,6 @@ public class ArticleServiceTests {
     public void saveTest()
     {
         Mockito.when(articleRepository.findByArtNumber("11")).thenReturn(articleList.get(0));
-        //Mockito.doReturn(articleList).when(articleRepository).save(Mockito.any());
 
         List<Article> articleSaved = articleService.save(articles.getInventory());
 
