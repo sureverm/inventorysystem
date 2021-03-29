@@ -36,16 +36,16 @@ public class InventoryControllerTest {
     @BeforeEach
     void setUp() {
         this.articleList = new ArrayList<>();
-        Article empOne = new Article("11", "Item", "Test Item To Save",
+        Article articleOne = new Article("11", "Item", "Test Item To Save",
                 100, Long.valueOf(200), false, null);
-        Article empTwo = new Article("22", "Item", "Test Item To Save",
+        Article articleTwo = new Article("22", "Item", "Test Item To Save",
                 100, Long.valueOf(200), false, null);
-        Article empThree = new Article("33", "Item", "Test Item To Save",
+        Article articleThree = new Article("33", "Item", "Test Item To Save",
                 100, Long.valueOf(200), false, null);
 
-        articleList.add(empOne);
-        articleList.add(empTwo);
-        articleList.add(empThree);
+        articleList.add(articleOne);
+        articleList.add(articleTwo);
+        articleList.add(articleThree);
     }
 
     @Test

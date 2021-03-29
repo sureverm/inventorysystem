@@ -1,25 +1,11 @@
 package com.myorg.inventory.controllers.integration.productrange.beans;
 
-import com.myorg.inventory.models.Article;
-
 import java.util.List;
 
-public class Articles {
-
+public class InventoryResponse {
     private Integer orderId;
     private String orderNumber;
-    private List<ArticleBean> inventory;
-
-    public List<ArticleBean> getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(List<ArticleBean> inventory) {
-        this.inventory = inventory;
-    }
-
-    public Articles() {
-    }
+    private String statusMessage;
 
     public Integer getOrderId() {
         return orderId;
@@ -35,5 +21,13 @@ public class Articles {
 
     public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
     }
 }

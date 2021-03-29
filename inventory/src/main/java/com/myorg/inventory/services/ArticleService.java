@@ -2,6 +2,7 @@ package com.myorg.inventory.services;
 
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
+import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
 import com.myorg.inventory.models.Article;
 import com.myorg.inventory.models.ArticleDBView;
 import com.myorg.inventory.repositories.ArticleDBViewRepository;
@@ -90,11 +91,12 @@ public class ArticleService implements ArticleServiceInterface{
     }
 
     @Override
-    public String updateArticleStock(Articles articles) {
+    public InventoryResponse updateArticleStock(Articles articles) {
         logger.debug("Inside ArticleService updateArticleStock(articles)--> is input list null ? "+ CollectionUtils.isEmpty(articles.getInventory()));
         List<Article> articleList = new ArrayList<>();
         Article parentArticleFromDB, childArticleToUpdate;
         Integer countToSubtract;
+        InventoryResponse returnObject = new InventoryResponse();
 
         for (ArticleBean parentArticleSold : articles.getInventory())  {
 
@@ -123,7 +125,10 @@ public class ArticleService implements ArticleServiceInterface{
             }
 
         }
-        return "Success";
+        returnObject.setOrderId(articles.getOrderId());
+        returnObject.setOrderNumber(articles.getOrderNumber());
+        returnObject.setStatusMessage("Stock Updated successfully.");
+        return returnObject;
     }
 
 }

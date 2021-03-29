@@ -2,6 +2,7 @@ package com.myorg.inventory.services;
 
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
+import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
 import com.myorg.inventory.models.Article;
 import com.myorg.inventory.models.ArticleRelationship;
 import com.myorg.inventory.repositories.ArticleRepository;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,9 +86,9 @@ public class ArticleServiceTests {
     {
         Mockito.when(articleRepository.findByArtNumber("11")).thenReturn(articleList.get(0));
 
-        String result = articleService.updateArticleStock(articles);
+        InventoryResponse result = articleService.updateArticleStock(articles);
 
-        Assertions.assertEquals("Success", result);
+        Assertions.assertEquals(true, result.getStatusMessage().toLowerCase().contains("success"));
 
     }
 

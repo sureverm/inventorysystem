@@ -1,9 +1,11 @@
 package com.myorg.inventory.controllers;
 
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
+import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
 import com.myorg.inventory.models.Article;
 import com.myorg.inventory.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,9 @@ public class InventoryController {
 
     @PutMapping
     @RequestMapping("/products/updateStock")
-    public String updateArticleStock(@RequestBody Articles articles) {
-        return articleService.updateArticleStock(articles);
+    public ResponseEntity<InventoryResponse> updateArticleStock(@RequestBody Articles articles) {
+        InventoryResponse responseObj =  articleService.updateArticleStock(articles);
+        return ResponseEntity.ok(responseObj);
     }
 
     @GetMapping

@@ -9,6 +9,16 @@ public class ProductBean {
     private boolean sellable;
     private List<ArticleBean> contain_articles;
 
+    public ProductBean(String product_id, String name, boolean sellable, List<ArticleBean> contain_articles) {
+        this.product_id = product_id;
+        this.name = name;
+        this.sellable = sellable;
+        this.contain_articles = contain_articles;
+    }
+
+    public ProductBean() {
+    }
+
     public String getName() {
         return name;
     }

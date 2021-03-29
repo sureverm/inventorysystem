@@ -68,8 +68,8 @@ public class ArticleRelationshipService implements ArticleRelationshipServiceInt
                 childArticle = articleRepository.findByArtNumber(articleBean.getArt_id());
 
                 if(null == childArticle) {
-                    logger.error("No inventory for product: " + productBean.getProduct_id());
-                    throw new RuntimeException("No inventory for product: " + productBean.getProduct_id());
+                    logger.error("No child inventory/article for product: " + productBean.getProduct_id());
+                    throw new RuntimeException("No child inventory/article for product: " + productBean.getProduct_id());
                 }
 
                 articleRelationship = relationshipRepository.findByChildArticle_ArtIdAndParentArticle_ArtId(childArticle.getArtId(),article.getArtId());

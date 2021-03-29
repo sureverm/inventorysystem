@@ -2,6 +2,7 @@ package com.myorg.inventory.services;
 
 import com.myorg.inventory.controllers.integration.productrange.beans.ArticleBean;
 import com.myorg.inventory.controllers.integration.productrange.beans.Articles;
+import com.myorg.inventory.controllers.integration.productrange.beans.InventoryResponse;
 import com.myorg.inventory.models.Article;
 import com.myorg.inventory.models.ArticleDBView;
 import com.myorg.inventory.models.ArticleRelationship;
@@ -21,5 +22,5 @@ public interface ArticleServiceInterface {
 
     Article getArticle(String art_id);
 
-    String updateArticleStock(Articles articles);
+    InventoryResponse updateArticleStock(Articles articles);
 }

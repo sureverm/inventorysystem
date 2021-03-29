@@ -26,6 +26,13 @@ public class ArticleRelationship implements Serializable {
     public ArticleRelationship(){
     }
 
+    public ArticleRelationship(Integer relationshipId, Integer quantity, Article childArticle, Article parentArticle) {
+        this.relationshipId = relationshipId;
+        this.quantity = quantity;
+        this.childArticle = childArticle;
+        this.parentArticle = parentArticle;
+    }
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
