@@ -21,6 +21,7 @@ public class Article implements Serializable {
     @Column(name="name")
     private String name;
     @Column(name="stock")
+    @JsonIgnore
     private Integer stock;
     @Column(name="price")
     private Long price;

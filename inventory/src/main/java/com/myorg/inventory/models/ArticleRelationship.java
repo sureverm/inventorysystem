@@ -34,7 +34,8 @@ public class ArticleRelationship implements Serializable {
     }
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    // EAGER fetch because when returning the sellable product list, new database calls must not be made when fetching the relationships
     @JoinColumn(
             name = "art_child_id",
             referencedColumnName = "art_id"
@@ -43,7 +44,8 @@ public class ArticleRelationship implements Serializable {
 
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    // EAGER fetch because when returning the sellable product list, new database calls must not be made when fetching the relationships
     @JoinColumn(
             name = "art_parent_id",
             referencedColumnName = "art_id"

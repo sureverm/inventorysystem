@@ -61,7 +61,7 @@ public class ProductRangeAppIntegration {
 
     }
 
-    /*
+    /**
      * Loads inventory articles form a dummy rest api implemented using either a standalone json-server setup or
      * json-server provided by github http://my-json-server.typicode.com
      */
@@ -79,7 +79,7 @@ public class ProductRangeAppIntegration {
         loadInventoryProducts();
     }
 
-    /*
+    /**
      * Loads inventory products form a dummy rest api implemented using either a standalone json-server setup or
      * json-server provided by github http://my-json-server.typicode.com
      */

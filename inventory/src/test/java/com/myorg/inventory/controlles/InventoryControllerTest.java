@@ -59,7 +59,7 @@ public class InventoryControllerTest {
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 
         System.out.println(result.getResponse());
-        String expected = "[{artId:null,artNumber:11,artType:Item,name:Test Item To Save,stock:100,price:200,sellable:false,listArticleRelationships:null},{artId:null,artNumber:22,artType:Item,name:Test Item To Save,stock:100,price:200,sellable:false,listArticleRelationships:null},{artId:null,artNumber:33,artType:Item,name:Test Item To Save,stock:100,price:200,sellable:false,listArticleRelationships:null}]";
+        String expected = "[{artId:null,artNumber:11,artType:Item,name:Test Item To Save,price:200,sellable:false,listArticleRelationships:null},{artId:null,artNumber:22,artType:Item,name:Test Item To Save,price:200,sellable:false,listArticleRelationships:null},{artId:null,artNumber:33,artType:Item,name:Test Item To Save,price:200,sellable:false,listArticleRelationships:null}]";
 
         Assertions.assertEquals(expected, result.getResponse().getContentAsString().replaceAll("\"",""));
     }

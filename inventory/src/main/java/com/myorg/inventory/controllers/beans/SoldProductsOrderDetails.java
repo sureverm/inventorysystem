@@ -13,7 +13,7 @@ public class SoldProductsOrderDetails {
     @NotBlank
     private String orderNumber;
 
-    @Size(min = 1) // the size consideration is ZERO because there can be a selleable article/product with no child articles
+    @Size(min = 1)
     List<SoldProducts> soldProduclsList = new ArrayList<>();
 
     public Integer getOrderId() {

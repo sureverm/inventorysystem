@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionHelper {
@@ -52,4 +53,10 @@ public class ExceptionHelper {
         response.sendError(response.getStatus(), ex.getMessage());
     }
 
+
+    @ExceptionHandler(value = { NoSuchElementException.class })
+    public void springHandleNotFound(NoSuchElementException ex, HttpServletResponse response) throws IOException {
+        logger.error("Exception No Records found: ",ex);
+        response.sendError(HttpStatus.OK.value(), ex.getMessage());
+    }
 }
